@@ -34,6 +34,8 @@ public:
 		std::optional<QThreadPool> &pool,
 		func_ptr_t<auto> func);
 
+	//git test
+
 	uint8_t startThread(QThreadPool& pool); //QThreadPool::globalInstance->start(hello);
 
 	//Maybe string literal instead of std::string?
