@@ -103,6 +103,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\thread\thread_model\thread_single.cpp" />
+    <ClCompile Include="src\thread\thread_model\thread_pool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CmakeLists.txt" />
@@ -113,7 +115,14 @@
   <ItemGroup>
     <QtMoc Include="include\gui\frame.h" />
     <ClInclude Include="include\gui\gui.h" />
-    <ClInclude Include="include\thread\thread_group.h" />
+    <ClInclude Include="include\gui\logo.h" />
+    <ClInclude Include="include\thread\thread.h" />
+    <ClInclude Include="include\thread\thread_model\thread_single.h" />
+    <ClInclude Include="include\thread\thread_dump.h" />
+    <ClInclude Include="include\thread\thread_future.h" />
+    <ClInclude Include="include\thread\thread_model\thread_pool.h" />
+    <ClInclude Include="include\thread\thread_sync.h" />
+    <ClInclude Include="include\thread\thread_core.h" />
     <ClInclude Include="include\util\checker.h" />
     <ClInclude Include="include\util\checksum.h" />
     <ClInclude Include="include\util\compile.h" />
