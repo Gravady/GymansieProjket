@@ -7,8 +7,16 @@ project(GymansieProjket)
 
 add_executable(GymansieProjket main.cpp)
 
-target_include_directories(GymansieProjket PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-find_package(Qt6 REQUIRED Components Core Widgets Gui))
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network WebSockets Xml Concurrent)
+target_link_libraries(your_target PRIVATE
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Widgets
+    Qt6::Network
+    Qt6::WebSockets
+    Qt6::Xml
+    Qt6::Concurrent
+)
 
 target_link_libraries(GymansieProjket PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui)
 

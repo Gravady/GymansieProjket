@@ -1,8 +1,13 @@
 #ifndef GUI_H
 #define GUI_H
 
-//Master include for all GUI related functionality
+#include <QObject>
 
-#include "frame.h"
+//Master include for all GUI related functionality
+class NOTIFICATION_FRAME : public QObject
+{
+	Q_OBJECT
+};
+
 
 #endif
