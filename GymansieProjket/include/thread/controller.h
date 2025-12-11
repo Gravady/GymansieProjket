@@ -17,6 +17,9 @@
 //inspired by https://github.com/polygamma/Qt-Multithreading/tree/master
 //thread_core will also be removed
 
+//Use https://learn.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports?utm_source=chatgpt.com
+//Completion ports for handling async threads
+
 class Controller : public QObject
 {
 	Q_OBJECT

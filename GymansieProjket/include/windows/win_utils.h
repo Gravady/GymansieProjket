@@ -1,76 +1,43 @@
-#ifndef WIN_UTILS_H
-#define WIN_UTILS_H
+//Moslty functional header only implementations
 
 #include <windows.h>
-#include <dbghelp.h>
+#include <winbase.h>
+#include <cstdint>
 
-//This needs to be changed
-#include <string_view>
-#include <mutex>
-#include <atomic>
-#include <algorithm>
-#include <queue>
+#include <type_traits>
+#include <memory>
 
-#include <QThread>
-#include <QMutex>
-#include <QQueue>
-#include <QWaitCondition>
+#include <include/util/types.h>
 
-//YAGNI change
-//TODO: Check all of this mess tommorow, it needs to be interlock with thread header implementation
-// instead of doing its own thing, needs to link with controller.h
-// 
-//Terminal for debugging purposes, changed it to this from a full fledged windows proc system
-//because its not needed in this simple example
-//NOTE: Not a flexiable class, only usecase is for there to be 1 displayable cmd window 
-class WINTERMINAL : public QThread
-{
-	Q_OBJECT
-public:
-	WINTERMINAL(QObject* object) : QThread(object), hChildStd_IN_Wr(NULL), hChildStd_OUT_Rd(NULL){
-		terminalCreate();
-		start();
-	}
-	WINTERMINAL() {
-		terminalCreate();
-		start();
-	}
-	~WINTERMINAL() {
-		wait();
-		terminalEnd();
-	}
+//Better async version may be needed, will be more implemented with threading system
+//https://learn.microsoft.com/en-us/windows/win32/api/profileapi/nf-profileapi-queryperformancecounter
+DOUBLE WINAPI setTimer(
+	LARGE_INTEGER freq,
+	LARGE_INTEGER time,
+	LPVOID callback,
+	HANDLE threadHandle
+) {
+	LARGE_INTEGER start;
+	LARGE_INTEGER end;
 
-	//Input
-	WINTERMINAL& operator >> (const char* streamline_data) noexcept;
-	WINTERMINAL& operator >> (QString streamline_data) noexcept;
+	QueryPerformanceFrequency(&freq);
+	QueryPerformanceCounter(&start);
+	WaitForSingleObject(threadHandle, INFINITE);
+	QueryPerformanceCounter(&end);
+		
+	return static_cast<DOUBLE>(end.QuadPart - start.QuadPart)
+		/ static_cast<DOUBLE>(freq.QuadPart);
+}
 
-	//Output
-	WINTERMINAL& operator << (const char* streamline_data) noexcept;
-	WINTERMINAL& operator << (QString streamline_data) noexcept;
-private:
-	HANDLE hChildStd_IN_Wr;
-	HANDLE hChildStd_OUT_Rd;
-	PROCESS_INFORMATION piProc;
-	QThread terminal_thread;
-	bool is_running = false;
+USHORT charToUshort(const char* character) {
+	return reinterpret_cast<USHORT>(character);
+}
 
-	std::mutex output_data_streamline_lock;
-	std::queue<QString> output_data_streamline;
+inline VOID WINAPI dumpWString(LPWSTR wString, WCHAR wideChar[MAX_PATH]) noexcept {
+	wcscat(wString, wideChar);
+	deallocateDefMem(wideChar);
+}
 
-	std::mutex input_data_streamline_lock;
-	std::queue<const char*> input_data_streamline;
-public:
-	//Return values may be changed for debugging purposes
-	static void terminalCreate();
-	static void terminalRun();
-	static void terminalEnd();
-	void newOuput(const QString& data); //May be changed to something else
-};
-
-//Stack information for debugging purposes using winapi
-#pragma comment(lib, "dbghelp.lib")
-class WINSTACK
-{
-
-};
-#endif
+inline VOID WINAPI dumpCString(LPCSTR cString, TCHAR shortChar) noexcept {
+	wscat
+}
